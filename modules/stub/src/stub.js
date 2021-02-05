@@ -6,7 +6,8 @@
     const queue = [];
     let win = window;
     let cmpFrame;
-    let gdprApplies;
+    let gdprApplies = false;
+    let cmpLoaded = false;
 
     function addFrame() {
 
@@ -68,6 +69,27 @@
 
         }
 
+      } else if (args[0] === 'setCmpLoaded') {
+
+        /**
+         * AdThrive
+         * shortcut to set cmpLoaded, useful to
+         * set in US when we want to signal for data
+         * to be used from the stub
+         */
+
+        if (args.length > 3 && parseInt(args[1], 10) === 2 && typeof args[3] === 'boolean') {
+
+          cmpLoaded = args[3];
+
+          if (typeof args[2] === 'function') {
+
+            args[2]('set', true);
+
+          }
+
+        }
+
       } else if (args[0] === 'ping') {
 
         /**
@@ -76,8 +98,8 @@
        */
 
         const retr = {
-          gdprApplies: gdprApplies,
-          cmpLoaded: false,
+          gdprApplies,
+          cmpLoaded,
           cmpStatus: 'stub',
         };
 
